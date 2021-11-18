@@ -3,15 +3,13 @@ from fastapi import APIRouter
 from database.config import database, DATABASE_URL
 from pydantic import BaseModel
 
-# user model
 metadata = sqlalchemy.MetaData()
 
 users = sqlalchemy.Table(
     'users',
     metadata,
-    sqlalchemy.Column("id", sqlalchemy.Integer),
-    sqlalchemy.Column("name", sqlalchemy.String(255)),
-    sqlalchemy.Column("email", sqlalchemy.String(255), primary_key=True)
+    sqlalchemy.Column("name", sqlalchemy.String),
+    sqlalchemy.Column("email", sqlalchemy.String, primary_key=True)
 )
 
 engine = sqlalchemy.create_engine(
@@ -21,13 +19,9 @@ engine = sqlalchemy.create_engine(
 metadata.create_all(engine)
 
 
-class User(BaseModel):
-    id: int
+class Users(BaseModel):
     name: str
     email: str
-
-    def insert(self):
-        pass
 
 
 router = APIRouter(
@@ -42,7 +36,7 @@ async def read_root():
 
 
 @router.post("")
-async def create_user(user: User):
-    query = user.insert().vaclues(name=user.name, email=user.email)
-    last_record_id = await database.execute(query)
-    return {**query.dict(), "id": last_record_id}
+async def create_user(user: Users):
+    query = users.insert().values(name=user.name, email=user.email)
+    await database.execute(query)
+    return {}
