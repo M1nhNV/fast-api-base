@@ -1,6 +1,6 @@
 import sqlalchemy
 from database.config import database, DATABASE_URL
-from app.entities.user import Users
+from app.requests.user import Users
 metadata = sqlalchemy.MetaData()
 
 users = sqlalchemy.Table(

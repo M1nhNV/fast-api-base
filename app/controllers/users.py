@@ -1,4 +1,4 @@
-from app.entities.user import Users
+from app.requests.user import Users
 from app.models.user import get_list
 
 

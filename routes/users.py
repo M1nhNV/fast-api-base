@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.controllers.users import index, create_user
-from app.entities.user import Users
+from app.requests.user import Users
 
 router = APIRouter(
     prefix="/users"
